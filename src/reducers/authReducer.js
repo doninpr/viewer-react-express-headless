@@ -1,16 +1,15 @@
-import { GET_AGGREGATE_PROPERTIES } from '../actions/types';
+import { GET_AUTH_TOKEN } from '../actions/types';
 
 const initialState = {
-  properties: []
+  authToken: null,
 };
 
 export default function viewer(state = initialState, action) {
   switch(action.type) {
-    case GET_AGGREGATE_PROPERTIES:
-      const { properties } = action;
+    case GET_AUTH_TOKEN:
       return {
         ...state,
-        properties,
+        authToken: action.props.authToken,
       }
     default:
       return state;

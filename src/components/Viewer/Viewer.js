@@ -16,22 +16,18 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-import React, { Component } from 'react';
+import React, {Component, useEffect} from 'react';
 import Helpers from './Viewer-helpers';
 
-class Viewer extends Component {
+function Viewer() {
+  useEffect(() => {
+    var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6dmlld2VyLXJvY2tzLXJlYWN0L1JDJTIwQ2FyLmYzZA';
+    Helpers.launchViewer('viewerDiv', documentId , '0002');
+  }, []);
 
-    componentDidMount() {
-        // RC Car Model
-        var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6dmlld2VyLXJvY2tzLXJlYWN0L1JDJTIwQ2FyLmYzZA';
-        Helpers.launchViewer('viewerDiv', documentId , '0002');        
-    }
-
-	render() {
-        return (
-            <div className='forge-viewer' id="viewerDiv" />
-        );
-	}
+  return (
+    <div className='forge-viewer' id="viewerDiv" />
+  );
 }
 
 export default Viewer;

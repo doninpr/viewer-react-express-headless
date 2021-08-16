@@ -1,2 +1,10 @@
+import { combineReducers } from "redux";
 import viewerReducer from './viewerReducer';
-export default viewerReducer;
+import authReducer from './authReducer';
+import projects from './projectsReducer';
+
+export default combineReducers({
+  viewerReducer,
+  authReducer,
+  projects,
+});

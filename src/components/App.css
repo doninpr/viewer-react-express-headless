@@ -2,3 +2,7 @@ body.fullscreen {
   max-height: 100vh;
   overflow: hidden;
 }
+
+.MuiAlert-icon {
+  align-items: center;
+}

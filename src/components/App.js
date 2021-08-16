@@ -16,26 +16,30 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////////////////
 
-import React, { Component } from 'react';
-import Jumbotron from './Jumbotron';
-import Footer from './Footer';
-import Gallery from './Gallery';
+import React, {useEffect} from 'react';
+import ProjectSelector from './ProjectSelector';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import 'font-awesome/css/font-awesome.css';
+import Client from './Client';
+import {useDispatch} from "react-redux";
+import { getAuthToken } from "../actions/authActions";
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <Jumbotron />
+var getToken = { accessToken: Client.getaccesstoken()};
 
-        <Gallery />
+function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getToken.accessToken.then(({ access_token }) => {
+      dispatch(getAuthToken({ authToken: access_token }));
+    });
+  }, []);
 
-        <Footer />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <ProjectSelector />
+    </div>
+  );
 }
 
 export default App;

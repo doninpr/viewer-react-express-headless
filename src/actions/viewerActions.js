@@ -1,9 +1,9 @@
-import * as types from './viewerTypes';
+import { GET_AGGREGATE_PROPERTIES } from './types';
 
 export function getViewerProperties(properties = []) {
   //console.log('action', properties)
   return {
-    type: types.GET_AGGREGATE_PROPERTIES,
+    type: GET_AGGREGATE_PROPERTIES,
     properties,
   }
 }
