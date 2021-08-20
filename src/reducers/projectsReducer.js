@@ -1,4 +1,13 @@
-import { GET_PROJECTS, GET_FILES, SET_PROJECT, SET_SELECTED_FILE } from '../actions/types';
+import {
+  GET_PROJECTS,
+  GET_FILES,
+  SET_PROJECT,
+  SET_SELECTED_FILE,
+  SET_FILE_VERSIONS,
+  SELECT_FILE_VERSION,
+  SET_FILE_PHASES,
+  SELECT_PHASE,
+} from '../actions/types';
 import _ from 'lodash';
 
 const initialState = {
@@ -40,6 +49,53 @@ export default function viewer(state = initialState, action) {
           [action.props.parent]: {
             ...state.files[action.props.parent],
             [action.props.file.id]: action.props.file,
+          },
+        },
+      }
+    case SET_FILE_VERSIONS:
+      return {
+        ...state,
+        selectedFiles: {
+            ...state.selectedFiles,
+            [action.props.fileId]: {
+              ...state.selectedFiles[action.props.fileId],
+              versions: action.props.data,
+              selectedVersion: 0,
+            },
+          },
+      }
+    case SELECT_FILE_VERSION:
+      return {
+        ...state,
+        selectedFiles: {
+          ...state.selectedFiles,
+          [action.props.fileId]: {
+            ...state.selectedFiles[action.props.fileId],
+            selectedVersion: action.props.version,
+            phases: null,
+          },
+        },
+      }
+    case SET_FILE_PHASES:
+      return {
+        ...state,
+        selectedFiles: {
+          ...state.selectedFiles,
+          [action.props.fileId]: {
+            ...state.selectedFiles[action.props.fileId],
+            phases: action.props.data,
+            selectedPhase: 0,
+          },
+        },
+      }
+    case SELECT_PHASE:
+      return {
+        ...state,
+        selectedFiles: {
+          ...state.selectedFiles,
+          [action.props.fileId]: {
+            ...state.selectedFiles[action.props.fileId],
+            selectedPhase: action.props.phase,
           },
         },
       }

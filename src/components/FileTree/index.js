@@ -3,7 +3,6 @@ import {CircularProgress, Collapse, List, ListItem, ListItemIcon, ListItemText} 
 import FolderIcon from "@material-ui/icons/Folder";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import FileIcon from "@material-ui/icons/InsertDriveFile";
 import {makeStyles} from "@material-ui/core/styles";
 import FilesGrid from "../FilesGrid";
 
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FileTree({ files, filesTree, nested }) {
+function FileTree({ files, filesTree, nested, fetchFolder }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState({});
 
@@ -33,6 +32,7 @@ function FileTree({ files, filesTree, nested }) {
       ...open,
       [key]: !open[key],
     });
+    fetchFolder(files[key]);
   };
 
   if(!files){
@@ -50,18 +50,18 @@ function FileTree({ files, filesTree, nested }) {
         {Object.values(files).map((file, key) => (
           <React.Fragment key={key}>
             {file.type === "folders" &&
-            <>
-              <ListItem button onClick={() => handleClick(file.id)}>
-                <ListItemIcon>
-                  <FolderIcon />
-                </ListItemIcon>
-                <ListItemText primary={file.attributes.displayName} />
-                {open[file.id] ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse in={open[file.id]} timeout="auto" unmountOnExit className={classes.nestedBorder}>
-                <FileTree files={filesTree[file.id]} filesTree={filesTree} nested />
-              </Collapse>
-            </>
+              <>
+                <ListItem button onClick={() => handleClick(file.id)}>
+                  <ListItemIcon>
+                    <FolderIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={file.attributes.displayName} />
+                  {open[file.id] ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={open[file.id]} timeout="auto" unmountOnExit className={classes.nestedBorder}>
+                  <FileTree files={filesTree[file.id]} filesTree={filesTree} nested fetchFolder={fetchFolder} />
+                </Collapse>
+              </>
             }
           </React.Fragment>
         ))}

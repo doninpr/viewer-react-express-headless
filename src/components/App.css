@@ -6,3 +6,7 @@ body.fullscreen {
 .MuiAlert-icon {
   align-items: center;
 }
+
+.MuiListSubheader-sticky {
+  background-color: white!important;
+}

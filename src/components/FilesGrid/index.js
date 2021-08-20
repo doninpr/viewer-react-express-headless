@@ -81,7 +81,7 @@ function FilesGrid({ files }) {
               </TableCell>
               <TableCell>{file.attributes.displayName}</TableCell>
               <TableCell align="right">
-                {moment(file.attributes.lastModifiedTime).format('MMMM Do YYYY, h:mm:ss a')}
+                {moment(file.attributes.lastModifiedTime).format('DD.MM.YY, h:mm')}
               </TableCell>
               <TableCell>
                 <IconButton size="small" href={file.links.webView.href} target="_blank">

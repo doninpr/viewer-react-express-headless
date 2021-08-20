@@ -12,7 +12,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {getProjects, getFiles, setProject} from "../../actions/projectsActions";
 import { makeStyles } from '@material-ui/core/styles';
 import FileTree from '../FileTree';
-import logoImg from './logo.png';
+import { Link } from "react-router-dom";
+import router from "../../routerPaths";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -104,7 +105,7 @@ function ProjectSelector() {
       .then(response => response.json())
   }
 
-  function fetchAllFolders(folders, isRoot = false) {
+  function fetchAllFolders(folders) {
     folders.map(folder => {
       if(folder.relationships.contents){
         fetchFolder(folder).then(({ data }) => {
@@ -134,13 +135,10 @@ function ProjectSelector() {
           .then(({ data }) => {
             fetchFolderByName(data,"Стадия П")
               .then(({ data }) => {
-                fetchFolderByName(data,"Заказчик")
-                  .then(({ data }) => {
-                    data.map(folder => {
-                      dispatch(getFiles({ parent: 'root', file: folder }));
-                    });
-                    fetchAllFolders(data);
-                  });
+                data.map(folder => {
+                  dispatch(getFiles({ parent: 'root', file: folder }));
+                });
+                //fetchAllFolders(data);
               });
           });
       });
@@ -195,7 +193,17 @@ function ProjectSelector() {
         <Grid item xs={12}>
           <Paper spacing={2} className={classes.paper}>
             <Grid container>
-              <FileTree files={files.root} filesTree={files} />
+              <FileTree
+                files={files.root}
+                filesTree={files}
+                fetchFolder={(folder) => {
+                  fetchFolder(folder).then(({ data }) => {
+                    data.map((file) => {
+                      dispatch(getFiles({ parent: folder.id, file: file }));
+                    });
+                  });
+                }}
+              />
             </Grid>
           </Paper>
         </Grid>
@@ -211,19 +219,17 @@ function ProjectSelector() {
         >
           <Alert severity="info" className={classes.alert}>
             Выбрано файлов: {Object.keys(selectedFiles).length}
-            <Button
-              color="primary"
-              variant="contained"
-              size="small"
-              className={classes.createModelButton}
-            >Создать сводную модель</Button>
+            <Link to={router.filePicker.path}>
+              <Button
+                color="primary"
+                variant="contained"
+                size="small"
+                className={classes.createModelButton}
+              >Создать сводную модель</Button>
+            </Link>
           </Alert>
         </Snackbar>
       }
-
-      <Grid xs={12} className={classes.logoWrapper}>
-        <img src={logoImg} />
-      </Grid>
     </Grid>
   );
 }
